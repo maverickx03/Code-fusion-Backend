@@ -13,6 +13,25 @@ router.get('/', function(req, res, next) {
 
 const secret = "secret";
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://your-vercel-url.vercel.app"
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
+
 
 router.post("/signUp", async (req,res) =>{
   let {username, name, email, password} = req.body;
